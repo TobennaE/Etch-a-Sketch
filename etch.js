@@ -13,7 +13,7 @@ for (let i = 0; i < 256; i++) {
     box.style.cssText = "background-color: white"
     container.appendChild(box);
 }
-// container.style.gridTemplateColumns =
+
 
 
 container.addEventListener('mouseover', function(e){
@@ -30,8 +30,9 @@ size.addEventListener('click', function(){
     } else  if (isNaN(newSize)) {
         alert("Error! Make Sure You Enter A Number")
     }
-
+    
 })
-
+// container.style.cssText = 
+// 'display: grid; grid-template-columns: repeat(' + newSize + ' ,';
 
 
