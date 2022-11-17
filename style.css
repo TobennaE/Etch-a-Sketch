@@ -23,7 +23,14 @@ html{
     gap: 5px;
 
 }
-#size, #vertical, #reset{
+.horizontal-size{
+    display: flex;
+    flex-direction: column;
+}
+#size-text{
+    text-align: center;
+}
+#vertical, #reset{
     padding: 7px;
     border-radius: 10px;
     border-color: transparent;
