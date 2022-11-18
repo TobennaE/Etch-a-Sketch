@@ -23,11 +23,11 @@ html{
     gap: 5px;
 
 }
-.horizontal-size{
+.horizontal-size, .vertical-size{
     display: flex;
     flex-direction: column;
 }
-#size-text{
+#size-text, #user-text, #size-textV{
     text-align: center;
 }
 #vertical, #reset{

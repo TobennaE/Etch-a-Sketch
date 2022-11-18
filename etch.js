@@ -1,15 +1,25 @@
 const container = document.getElementById('container')
 const size = document.getElementById('size')
+const vSize = document.getElementById('sizeV')
 const sizeText = document.getElementById('size-text')
+const vSizeText = document.getElementById('size-textV')
 const theHeader = document.getElementById('header')
 const reset = document.getElementById('reset')
 const vertical = document.getElementById('vertical')
 const horizontalSize = document.getElementsByClassName('horizontal-size')
+const verticalSize = document.getElementsByClassName('vertical-size')
+let opac = 0.1
 function colorRandomier(){
     let a = Math.floor(Math.random() * 256);
     let b = Math.floor(Math.random() * 256);
     let c = Math.floor(Math.random() * 256);
     return "rgb(" + a + ", " + b + ", " + c + ")";
+}
+function colorRandomierOpacity(opac) {
+    let a = Math.floor(Math.random() * 256);
+    let b = Math.floor(Math.random() * 256);
+    let c = Math.floor(Math.random() * 256);
+    return "rgb(" + a + ", " + b + ", " + c + ', ' + opac + ")";
 }
 function removeChildNodes(parent) {
     while (parent.firstChild) {
@@ -37,6 +47,27 @@ function sizeSlider() {
         grid-template-rows: repeat(` + rangeValue + `, auto);
         `;
     };
+}
+function sizeSliderV() {
+    let verticalSize = vSize.value
+    let allDiv = document.querySelectorAll('div')
+    allDiv = Array.from(allDiv)
+    for (div in allDiv) {
+        let divToWhite = document.getElementById('box' + div);
+        divToWhite.style.backgroundColor = "white";
+    };
+    removeChildNodes(container)
+        for (let i = 0; i < verticalSize; i++) {
+            let box = document.createElement('div');
+            box.setAttribute('id','box' + i)
+            box.style.cssText = "background-color: white"
+            container.appendChild(box);
+            container.style.cssText = `
+            display: grid; 
+            grid-template-columns: repeat(` + verticalSize + `);
+            grid-template-rows: repeat(` + verticalSize + `);
+            `;
+        };
 }
 for (let i = 0; i < 16 * 16; i++) {
     let box = document.createElement('div');
@@ -66,37 +97,22 @@ reset.addEventListener('click', function(){
 
     }
 });
-vertical.addEventListener('click', function(){
-    let verticalSize = prompt('Enter a number less than or equal to 1225')
-    verticalSize = Number(verticalSize)
-    console.log(verticalSize)
-    if (verticalSize > 1225) {
-        alert("Error! Please Enter a number less than or equal to 1225")
-    } else  if (isNaN(verticalSize)) {
-        alert("Error! Make Sure You Enter A Number")
-    }
-    if (verticalSize <= 1225) {
-        removeChildNodes(container)
-        for (let i = 0; i < verticalSize; i++) {
-            let box = document.createElement('div');
-            box.setAttribute('id','box' + i)
-            box.style.cssText = "background-color: white"
-            container.appendChild(box);
-            container.style.cssText = `
-            display: grid; 
-            grid-template-columns: repeat(` + verticalSize + `);
-            grid-template-rows: repeat(` + verticalSize + `);
-            `;
-        };
-    };
-})
 
+sizeText.textContent = size.value + ' X ' + size.value;
+size.oninput = function() {
+    sizeText.textContent = this.value + ' X ' + this.value
+};
+
+vSizeText.textContent = vSize.value;
+vSize.oninput = function() {
+    vSizeText.textContent = this.value
+};
 container.addEventListener('mouseover', function(e){
     let boxId = document.getElementById(e.target.id)
     console.log(typeof(boxId))
     boxId.style.backgroundColor = colorRandomier();
 });
-sizeText.textContent = size.value;
+
 
 for (let i = 0; i < horizontalSize.length; i++){
     horizontalSize[i].addEventListener('click', function(e){
@@ -109,10 +125,11 @@ for (let i = 0; i < horizontalSize.length; i++){
             console.log(sizeInput)
         };
         size.oninput = function() {
-            sizeText.textContent = this.value
+            sizeText.textContent = this.value + ' X ' + this.value
         }
     });
 };
+
 for (let i = 0; i < horizontalSize.length; i++){
     horizontalSize[i].addEventListener('keydown', function(e) {
         if (e.target && e.target.matches('input#size-input') && e.keyCode == 13) {
@@ -127,13 +144,64 @@ for (let i = 0; i < horizontalSize.length; i++){
                 listSize[1].replaceWith(size)
                 size.value = listSize[1].value
                 sizeText.textContent = size.value
+                vSize.value = 1
+                vSizeText.textContent = 1
                 sizeSlider()
             }
         }
     })
 };
+
+
+for (let i = 0; i < verticalSize.length; i++){
+    verticalSize[i].addEventListener('click', function(e){
+        if (e.target && e.target.matches('span#size-textV')) {
+            const sizeInputV = document.createElement('input')
+            sizeInputV.setAttribute('id', 'sizeV-input')
+            sizeInputV.setAttribute('placeholder','Type Value')
+            sizeInputV.style.cssText = 'background-color: black; color: white; border: 0'
+            vSize.replaceWith(sizeInputV)
+            console.log(sizeInputV)
+        };
+        vSize.oninput = function() {
+            vSizeText.textContent = this.value
+        }
+    });
+};
+
+for (let i = 0; i < verticalSize.length; i++){
+    verticalSize[i].addEventListener('keydown', function(e) {
+        if (e.target && e.target.matches('input#sizeV-input') && e.keyCode == 13) {
+            e.stopPropagation()
+            let listSize = Array.from(verticalSize[i].childNodes)
+            let vSizeInputValue = listSize[1].value
+            console.log(vSizeInputValue)
+            if (isNaN(vSizeInputValue)) {
+                console.log(vSize.value)
+                listSize[1].replaceWith(vSize)
+            } else {
+                listSize[1].replaceWith(vSize)
+                vSize.value = listSize[1].value
+                vSizeText.textContent = vSize.value
+                size.value = 1
+                sizeText.textContent = 1 + ' X ' + 1
+                sizeSliderV()
+                
+            }
+        }
+    })
+};
+
+
+
 size.onchange = function() {
+    vSize.value = 1
+    vSizeText.textContent = 1
     sizeSlider();
 }
-
+vSize.onchange = function() {
+    size.value = 1
+    sizeText.textContent = 1 + ' X ' + 1
+    sizeSliderV();
+}
 
