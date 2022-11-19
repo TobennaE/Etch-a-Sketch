@@ -23,6 +23,12 @@ html{
     gap: 5px;
 
 }
+.criteria{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
 .horizontal-size, .vertical-size{
     display: flex;
     flex-direction: column;

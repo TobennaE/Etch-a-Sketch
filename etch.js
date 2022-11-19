@@ -1,3 +1,4 @@
+const mainHTML = document.documentElement
 const container = document.getElementById('container')
 const size = document.getElementById('size')
 const vSize = document.getElementById('sizeV')
@@ -8,7 +9,17 @@ const reset = document.getElementById('reset')
 const vertical = document.getElementById('vertical')
 const horizontalSize = document.getElementsByClassName('horizontal-size')
 const verticalSize = document.getElementsByClassName('vertical-size')
-let opac = 0.1
+const backGroundChange = document.getElementById('backGroundChange')
+const blackBack = document.getElementById('blackBack')
+const grayBack = document.getElementById('grayBack')
+const blackColor = document.getElementById('blackColor')
+
+blackBack.oninput = function() {
+    mainHTML.style.backgroundColor = 'black'
+}
+grayBack.oninput = function() {
+    mainHTML.style.backgroundColor = 'gray'
+}
 function colorRandomier(){
     let a = Math.floor(Math.random() * 256);
     let b = Math.floor(Math.random() * 256);
@@ -84,8 +95,11 @@ for (let i = 0; i < 16 * 16; i++) {
 theHeader.addEventListener('mouseover', function(e){
     if (e.target.id != 'header'){
         let spanId = document.getElementById(e.target.id)
-        console.log(typeof(spanId));
-        spanId.style.color = colorRandomier();
+        if (blackColor.checked == true) {
+            spanId.style.color = 'black'
+        } else {
+            spanId.style.color = colorRandomier();
+        }
     };
 });
 reset.addEventListener('click', function(){
@@ -109,8 +123,11 @@ vSize.oninput = function() {
 };
 container.addEventListener('mouseover', function(e){
     let boxId = document.getElementById(e.target.id)
-    console.log(typeof(boxId))
-    boxId.style.backgroundColor = colorRandomier();
+    if (blackColor.checked == true) {
+        boxId.style.backgroundColor = 'black';
+    } else {
+        boxId.style.backgroundColor = colorRandomier();
+    }
 });
 
 
@@ -122,7 +139,6 @@ for (let i = 0; i < horizontalSize.length; i++){
             sizeInput.setAttribute('placeholder','Type Value')
             sizeInput.style.cssText = 'background-color: black; color: white; border: 0'
             size.replaceWith(sizeInput)
-            console.log(sizeInput)
         };
         size.oninput = function() {
             sizeText.textContent = this.value + ' X ' + this.value
@@ -136,14 +152,13 @@ for (let i = 0; i < horizontalSize.length; i++){
             e.stopPropagation()
             let listSize = Array.from(horizontalSize[i].childNodes)
             let sizeInputValue = listSize[1].value
-            console.log(sizeInputValue)
             if (isNaN(sizeInputValue)) {
                 console.log(size.value)
                 listSize[1].replaceWith(size)
             } else {
                 listSize[1].replaceWith(size)
                 size.value = listSize[1].value
-                sizeText.textContent = size.value
+                sizeText.textContent = size.value + ' X ' + size.value
                 vSize.value = 1
                 vSizeText.textContent = 1
                 sizeSlider()
@@ -161,7 +176,6 @@ for (let i = 0; i < verticalSize.length; i++){
             sizeInputV.setAttribute('placeholder','Type Value')
             sizeInputV.style.cssText = 'background-color: black; color: white; border: 0'
             vSize.replaceWith(sizeInputV)
-            console.log(sizeInputV)
         };
         vSize.oninput = function() {
             vSizeText.textContent = this.value
@@ -175,7 +189,6 @@ for (let i = 0; i < verticalSize.length; i++){
             e.stopPropagation()
             let listSize = Array.from(verticalSize[i].childNodes)
             let vSizeInputValue = listSize[1].value
-            console.log(vSizeInputValue)
             if (isNaN(vSizeInputValue)) {
                 console.log(vSize.value)
                 listSize[1].replaceWith(vSize)
